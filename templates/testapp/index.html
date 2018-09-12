@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Machine Learning</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <!--<script>
+        $(document).ready(function() {
+          $("#source").change(function() {
+            var el = $(this) ;
+            var x = el.val()
+          });
+          $("#status").change(function() {
+            var el = $(this) ;
+            var x = el.val()
+            $.ajax({
+	          type: "POST",
+	          url: "test",
+	          csrfmiddlewaretoken: '{{ csrf_token }}'
+	          data: "array="+JSON.stringify(x)
+	       }).done(function( msg ) { });
+          });
+        });
+    </script>-->
+    <script>
+    	$(document).ready(function(){
+
+		$('#slct-btn').click(function(){
+		var e = document.getElementById("status");
+		var value = e.options[e.selectedIndex].value;
+
+		var e1 = document.getElementById("source");
+		var value1 = e1.options[e1.selectedIndex].value;
+		$.ajax({
+		    url: "test",
+		    type: "post", // or "get"
+		    data: value,
+		    csrfmiddlewaretoken: '{{ csrf_token }}',
+		    success: function(data) { 
+		    }});
+
+		});
+		function getCookie(name) {
+        var cookieValue = null;
+        var i = 0;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (i; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    }); 
+
+
+});
+	    </script>
+	    <!--<script type="text/javascript">
+	    	$(document).ready(function(){
+	    		$('#slct-btn').click(function(){
+	    			var e1 = document.getElementById("source");
+					var value1 = e1.options[e1.selectedIndex].value;
+					if
+	    		}); 
+	    	});
+	    </script>-->
+</head>
+<body>
+    <div class="container text-center">
+        <h1 class="text-center">Machine Learning</h1>
+        <div class="row">
+            <div class="col-md-6">
+            	<h3>Select Database</h3>
+                <select id="source" name="source">
+                	{% for i in dbName %}
+					<option>{{i}}</option>
+					{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+            	<h3>Select Algorithm</h3>
+                <select id="status" name="status">
+                    <option>Simple Linear Regression</option>
+                </select>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center row">
+        		<a href="test"><button type="button" class="btn btn-primary" id = "slct-btn">Proceed</button></a>
+        </div>
+    </div>
+</body>
+</html>

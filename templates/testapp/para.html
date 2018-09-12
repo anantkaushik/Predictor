@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Machine Learning</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <!--<script type="text/javascript">
+        $(document).ready(function() {
+            $("#source").change(function() {
+                var e = document.getElementById("source");
+                var value = e.options[e.selectedIndex].value;
+                var favorite = [];
+                $.each($("input[name='cblist']:checked"), function(){            
+                    favorite.push($(this).val());
+                });
+                console.log(favorite);
+                $.each( favorite, function( index, v ){
+                    if (value == v){
+                        console.log(v)
+                        $("#slct-btn").prop("disabled", true);
+                        return false;
+                    }
+                    $("#slct-btn").removeAttr('disabled');
+                });
+            });
+            $("#cblist").change(function() {
+                var e = document.getElementById("source");
+                var value = e.options[e.selectedIndex].value;
+                var favorite = [];
+                $.each($("input[name='cblist']:checked"), function(){            
+                    favorite.push($(this).val());
+                });
+                console.log(favorite);
+                $.each( favorite, function( index, v ){
+                    if (value == v){
+                        console.log(v)
+                        $("#slct-btn").prop("disabled", true);
+                        return false;
+                    }
+                    $("#slct-btn").removeAttr('disabled');
+                });
+            });
+        });
+    </script>
+     <script type="text/javascript">
+        $(document).ready(function() {
+            $("#slct-btn").click(function() {
+                var e = document.getElementById("Size").value;
+                $.ajax({
+                url: 'calculate_algo', 
+                data: {'range':e}.serialize(), 
+                type: 'POST', 
+                success: function(response) {
+                    console.log(response); 
+                }, 
+                error: function(error) {
+                    console.log(error); 
+                },
+                });
+            });
+        });
+    </script>-->
+    <script>
+        $(document).ready(function(){
+
+        $('#slct-btn').click(function(){
+            var e = document.getElementById("Size").value;
+        $.ajax({
+            url: "calculate_algo",
+            type: "post", // or "get"
+            data: e,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            success: function(data) { 
+                console.log(data)
+            }});
+
+        });
+        function getCookie(name) {
+        var cookieValue = null;
+        var i = 0;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (i; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    }); 
+
+
+});
+        </script>
+</head>
+<body>
+    <div class="container text-center">
+        <h1 class="text-center">Select Parameters</h1>
+        <form action="calculate_algo" method="POST">
+            {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Select Training Set Size</h3>
+                <input type="number" name="training_size" id ="Size" min=50 max=100>
+            </div>
+            <div class="col-md-4">
+                <h3>Random State</h3>
+                <input type="number" name="random_state" min=0>
+            </div>
+            <div class="col-md-4">
+                <h3>Fit Intercept</h3>
+                <select name="fit_intercept">
+                    <option value="true">True</option>
+                    <option value="false">False</option>
+                </select>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center row" style="margin-top: 20px;">
+                <input type="submit" class="btn btn-primary" id = "slct-btn" value="Proceed"></a>
+        </div>
+        </form>
+    </div>
+</body>
+</html>

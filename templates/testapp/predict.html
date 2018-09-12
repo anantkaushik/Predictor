@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Machine Learning</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div class="container text-center">
+        <h1 class="text-center">Predict {{dv}}</h1>
+        <form action="f_result" method="POST">
+            {% csrf_token %}
+        <div class="row text-center">
+            <div class="col-md-12">
+                <h3>Enter {{idv}}</h3>
+                <input type="text" name="input_idv">
+            </div>
+        </div>
+        <div class="d-flex justify-content-center row" style="margin-top: 20px;">
+                <input type="submit" class="btn btn-primary" id = "slct-btn" value="Predict"></a>
+        </div>
+        </form>
+    </div>
+</body>
+</html>

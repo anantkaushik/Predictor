@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Machine Learning</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <script type="text/javascript">
+        
+    </script>
+</head>
+<body>
+    <div class="container text-center">
+        <h1 class="text-center">Data Set</h1>
+            <table border=1 style="margin: auto;">
+                <tr>
+                    <td>YearsExperience</td>
+                    <td>Salary</td>
+                </tr>
+            {% for row in dataset %}
+            <tr>
+            {% for sub_row in row %}
+                <td>{{sub_row}}</td>
+            {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+        <div class="d-flex justify-content-center row" style="margin: 10px;">
+            <a href="setpara"> <button type="button" class="btn btn-primary" id = "slct-btn">Calculate</button></a>
+        </div>
+    </div>
+</body>
+</html>

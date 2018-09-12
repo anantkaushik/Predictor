@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Machine Learning</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#slct-btn").prop("disabled", true);
+            $("#source").change(function() {
+                var e = document.getElementById("source");
+                var value = e.options[e.selectedIndex].value;
+                var favorite = [];
+                $.each($("input[name='cblist']:checked"), function(){            
+                    favorite.push($(this).val());
+                });
+                console.log(favorite.length);
+                $.each( favorite, function( index, v ){
+                    if (value == v){
+                        console.log(v)
+                        $("#slct-btn").prop("disabled", true);
+                        return false;
+                    }
+                    $("#slct-btn").removeAttr('disabled');
+                });
+                if (favorite.length == 0){
+                    $("#slct-btn").prop("disabled", true);
+                }
+            });
+            $("#cblist").change(function() {
+                var e = document.getElementById("source");
+                var value = e.options[e.selectedIndex].value;
+                var favorite = [];
+                $.each($("input[name='cblist']:checked"), function(){            
+                    favorite.push($(this).val());
+                });
+                console.log(favorite);
+                $.each( favorite, function( index, v ){
+                    if (value == v){
+                        console.log(v)
+                        $("#slct-btn").prop("disabled", true);
+                        return false;
+                    }
+                    $("#slct-btn").removeAttr('disabled');
+                });
+                if (favorite.length == 0){
+                    $("#slct-btn").prop("disabled", true);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container text-center">
+        <h1 class="text-center">Select Variables</h1>
+        <form action="displaydata" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                    <div class="col-md-6">
+                        <h3>Select Dependent Variables</h3>
+                        <select id="source" name="source">
+                            {% for i in column_name %}
+                            <option value="{{i}}">{{i}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Select Independent Variables</h3>
+                        <div id="cblist">
+                            {% for i in column_name %}
+                            <label name="cblist"> <input type="checkbox" name="cblist" value="{{i}}">{{i}}</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+            </div>
+            <div class="d-flex justify-content-center row">
+                    <input type="submit" class="btn btn-primary" id = "slct-btn" value="Proceed">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
